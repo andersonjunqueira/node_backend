@@ -37,7 +37,7 @@ describe('get find user', () => {
   
       const response = await getFindUser(request)
       expect(response).toBeTruthy()
-      expect(response.statusCode).toBe(400)
+      expect(response.statusCode).toBe(404)
 
     } catch(e) {
       log.test({ msg: e })

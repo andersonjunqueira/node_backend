@@ -31,11 +31,11 @@ describe('post create account', () => {
         requestURL: `http://localhost:3000/api/register`,
         body: { email: 'user@domain.com', password: 'abc123' }
       }
-      
+
       const response = await postCreateAccount(request)
       expect(response.statusCode).toBe(400)
 
-    } catch(e) {
+    } catch (e) {
       log.test({ msg: e })
       fail('It is not supposed to throw any error')
     }
@@ -43,7 +43,7 @@ describe('post create account', () => {
 
   it('should not create account without email', async () => {
     try {
-      
+
       const request = {
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ describe('post create account', () => {
       const response = await postCreateAccount(request)
       expect(response.statusCode).toBe(400)
 
-    } catch(e) {
+    } catch (e) {
       log.test({ msg: e })
       fail('It is not supposed to throw any error')
     }
@@ -64,7 +64,7 @@ describe('post create account', () => {
 
   it('should not create account without password', async () => {
     try {
-      
+
       const request = {
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ describe('post create account', () => {
       const response = await postCreateAccount(request)
       expect(response.statusCode).toBe(400)
 
-    } catch(e) {
+    } catch (e) {
       log.test({ msg: e })
       fail('It is not supposed to throw any error')
     }
@@ -85,7 +85,7 @@ describe('post create account', () => {
 
   it('should create new user account', async () => {
     try {
-      
+
       const user = makeFakeUser()
       const request = {
         headers: {
@@ -100,7 +100,7 @@ describe('post create account', () => {
       expect(response.statusCode).toBe(201)
       expect(response.headers.Location).toBe(`http://localhost:3000/api/users/${response.body.id}`)
 
-    } catch(e) {
+    } catch (e) {
       log.test({ msg: e })
       fail('It is not supposed to throw any error')
     }
@@ -108,7 +108,7 @@ describe('post create account', () => {
 
   it('should not create a duplicated account', async () => {
     try {
-      
+
       const user = makeFakeUser()
       const request = {
         headers: {
@@ -125,9 +125,9 @@ describe('post create account', () => {
 
       const response2 = await postCreateAccount(request)
       expect(response2.statusCode).toBe(400)
-      expect(response2.body.error).toBe('E-mail already registered.')
+      expect(response2.body.error.message).toBe('E-mail already registered.')
 
-    } catch(e) {
+    } catch (e) {
       log.test({ msg: e })
       fail('It is not supposed to throw any error')
     }

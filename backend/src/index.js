@@ -26,9 +26,9 @@ app.use((_, res, next) => {
 
 const isAuthenticated = makeIsAuthenticated({ checkToken, log })
 
-app.post(`${apiRoot}/login`, makeCallback(postLogin))
-app.post(`${apiRoot}/register`, makeCallback(postCreateAccount))
-app.get(`${apiRoot}/users/:id`, isAuthenticated, makeCallback(getFindUser))
+app.post(`${apiRoot}/v0/register`, makeCallback(postCreateAccount))
+app.post(`${apiRoot}/v0/login`, makeCallback(postLogin))
+app.get(`${apiRoot}/v0/users/:id`, isAuthenticated, makeCallback(getFindUser))
 
 app.use(makeCallback(notFound))
 

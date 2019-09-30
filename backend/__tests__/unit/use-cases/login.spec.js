@@ -23,65 +23,32 @@ describe('login use case', () => {
     await clearDb()
     usersDb = makeUsersDb({ makeDb })
     tokensDb = makeTokensDb({ makeDb })
-    login = makeLogin({ usersDb, tokensDb, md5, log, moment })
+    login = makeLogin({ usersDb, tokensDb, md5, moment, log })
     createAccount = makeCreateAccount({ usersDb, md5, log })
     findUser = makeFindUser({ usersDb, log })
-  })    
-
-  it('should not login without email and password', async () => {
-    try {
-      
-      await login()
-      fail('It is not supposed to get to this point')
-
-    } catch(e) {
-      expect(e.message).toBe('e-mail and password are mandatory.')
-    }
-  })
-
-  it('should not login without email', async () => {
-    try {
-
-      await login(undefined, 'abc123')
-      fail('It is not supposed to get to this point')
-
-    } catch(e) {
-      expect(e.message).toBe('e-mail and password are mandatory.')
-    }
-  })
-
-  it('should not login without password', async () => {
-    try {
-
-      await login('user@domain.com')
-      fail('It is not supposed to get to this point')
-
-    } catch(e) {
-      expect(e.message).toBe('e-mail and password are mandatory.')
-    }
   })
 
   it('should not login with a wrong email', async () => {
     try {
-      
+
       await login('user@domain.com', 'abc123')
       fail('It is not supposed to get to this point')
 
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe('Invalid e-mail/password.')
     }
   })
 
   it('should not login with a wrong password', async () => {
     try {
-      
+
       const user = makeFakeUser()
       await createAccount({ fullName: user.fullName, email: user.email, password: user.password })
-      
+
       await login(user.email, 'abc123')
       fail('It is not supposed to get to this point')
 
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe('Invalid e-mail/password. You have 2 attenpts before the user is blocked.')
     }
   })
@@ -97,8 +64,8 @@ describe('login use case', () => {
       expect(token.getUserId()).toBe(user.id)
       expect(token.getAccessToken()).toBeTruthy()
 
-    } catch(e) {
-      log.test({ msg: e})
+    } catch (e) {
+      log.test({ msg: e })
       fail('It is not supposed to throw any error')
     }
   })
@@ -106,27 +73,27 @@ describe('login use case', () => {
   it('should block a user if login is wrong 3x', async () => {
     const user = makeFakeUser()
     const acc = await createAccount({ fullName: user.fullName, email: user.email, password: user.password })
-    
-    try { 
+
+    try {
       await login(user.email, 'abc123')
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe('Invalid e-mail/password. You have 2 attenpts before the user is blocked.')
     }
 
-    try { 
+    try {
       await login(user.email, 'abc123')
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe('Invalid e-mail/password. You have 1 attenpts before the user is blocked.')
     }
 
-    try { 
+    try {
       await login(user.email, 'abc123')
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe('This user is blocked.')
     }
 
     const found = await findUser({ id: acc.id })
-    
+
     expect(found).toBeTruthy()
     expect(found.email).toBe(acc.email)
     expect(found.blockedOn).toBeTruthy()

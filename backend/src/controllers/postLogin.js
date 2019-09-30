@@ -1,10 +1,12 @@
+import BadRequestError from '../errors/BadRequestError'
+
 export default function makePostLogin({ login, log }) {
   return async function postLogin(httpRequest) {
     try {
       
       const { email, password } = httpRequest.body
       if(!email || !password) {
-        throw new Error('Password and e-mail are mandatory')
+        throw new BadRequestError('e-mail and password are mandatory.')
       }
 
       const tokenInfo = await login(email, password)
@@ -24,10 +26,8 @@ export default function makePostLogin({ login, log }) {
         headers: {
           'Content-Type': 'application/json'
         },
-        statusCode: 400,
-        body: {
-          error: e.message
-        }
+        statusCode: e.statusCode,
+        body: log.createLogObject(e)
       }
     }
   }

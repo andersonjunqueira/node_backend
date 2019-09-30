@@ -21,13 +21,13 @@ describe('post login', () => {
     await clearDb()
     usersDb = makeUsersDb({ makeDb })
     tokensDb = makeTokensDb({ makeDb })
-    login = makeLogin({ usersDb, tokensDb, md5, log, moment })
+    login = makeLogin({ usersDb, tokensDb, md5, moment, log })
     postLogin = makePostLogin({ login, log })
   })
 
   it('should return a token', async () => {
     try {
-      
+
       const user = makeFakeUser()
       const password = user.password
       user.password = md5(user.password)
@@ -41,13 +41,13 @@ describe('post login', () => {
         requestURL: `http://localhost:3000/api/login`,
         body: { email: user.email, password }
       }
-  
+
       const response = await postLogin(request)
       expect(response.body).toBeTruthy()
       expect(response.statusCode).toBe(200)
       expect(response.body.accessToken).toBeTruthy()
 
-    } catch(e) {
+    } catch (e) {
       log.test({ msg: e })
       fail('It is not supposed to throw any error')
     }
@@ -55,12 +55,12 @@ describe('post login', () => {
 
   it('should not login (no user)', async () => {
     try {
-      
+
       const user = makeFakeUser()
       const password = user.password
       user.password = md5(user.password)
       await usersDb.insert(user)
-  
+
       const request = {
         headers: {
           'Content-Type': 'application/json',
@@ -69,14 +69,14 @@ describe('post login', () => {
         requestURL: `http://localhost:3000/api/login`,
         body: { password }
       }
-  
+
       const response = await postLogin(request)
       expect(response.body).toBeTruthy()
       expect(response.statusCode).toBe(400)
       expect(response.body.error).toBeTruthy()
-      expect(response.body.error).toBe('Password and e-mail are mandatory')
+      expect(response.body.error.message).toBe('e-mail and password are mandatory.')
 
-    } catch(e) {
+    } catch (e) {
       log.test({ msg: e })
       fail('It is not supposed to throw any error')
     }
@@ -84,11 +84,11 @@ describe('post login', () => {
 
   it('should not login (no password)', async () => {
     try {
-      
+
       const user = makeFakeUser()
       user.password = md5(user.password)
       await usersDb.insert(user)
-  
+
       const request = {
         headers: {
           'Content-Type': 'application/json',
@@ -97,14 +97,14 @@ describe('post login', () => {
         requestURL: `http://localhost:3000/api/login`,
         body: { email: user }
       }
-  
+
       const response = await postLogin(request)
       expect(response.body).toBeTruthy()
       expect(response.statusCode).toBe(400)
       expect(response.body.error).toBeTruthy()
-      expect(response.body.error).toBe('Password and e-mail are mandatory')
+      expect(response.body.error.message).toBe('e-mail and password are mandatory.')
 
-    } catch(e) {
+    } catch (e) {
       log.test({ msg: e })
       fail('It is not supposed to throw any error')
     }

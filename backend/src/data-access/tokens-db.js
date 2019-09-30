@@ -2,7 +2,8 @@ export default function makeTokensDb({ makeDb, Id }) {
 
   return Object.freeze({
     findByAccessToken,
-    insert
+    insert,
+    remove
   })
 
   async function findByAccessToken(accessToken) {
@@ -23,6 +24,12 @@ export default function makeTokensDb({ makeDb, Id }) {
       .insertOne({ _id, ...tokenInfo })
     const { _id: id, ...insertedInfo } = result.ops[0]
     return { id, ...insertedInfo }
+  }
+
+  async function remove({ id: _id }) {
+    const db = await makeDb()
+    const result = await db.collection('tokens').deleteOne({ _id })
+    return result.deletedCount
   }
 
 }

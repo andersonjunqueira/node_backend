@@ -20,7 +20,6 @@ describe('authentication middleware', () => {
   let checkToken
   let isAuthenticated
   let createAccount
-  let response
   let next = (param) => param
 
   beforeEach(async () => {
@@ -31,7 +30,6 @@ describe('authentication middleware', () => {
     checkToken = makeCheckToken({ usersDb, tokensDb, jwt, moment, log })
     isAuthenticated = makeIsAuthenticated({ checkToken, log })
     createAccount = makeCreateAccount({ usersDb, md5, log })
-    response = new Response()
   })
 
   it('should not check an empty token', async () => {
@@ -45,11 +43,12 @@ describe('authentication middleware', () => {
         params: { id: '123456' }
       }
 
+      const response = new Response()
       await isAuthenticated(request, response, next)
-      expect(response.status()).toBe(403)
-      expect(response.error()).toBe('Authentication header not present.')
+      expect(response.status()).toBe(401)
+      expect(response.error().message).toBe('Authentication header not present.')
 
-    } catch(e) {
+    } catch (e) {
       log.test({ msg: e })
       fail('It is not supposed to throw any error')
     }
@@ -67,11 +66,12 @@ describe('authentication middleware', () => {
         params: { id: '123456' }
       }
 
+      const response = new Response()
       await isAuthenticated(request, response, next)
-      expect(response.status()).toBe(403)
-      expect(response.error()).toBe('Invalid token.')
+      expect(response.status()).toBe(401)
+      expect(response.error().message).toBe('Invalid token.')
 
-    } catch(e) {
+    } catch (e) {
       log.test({ msg: e })
       fail('It is not supposed to throw any error')
     }
@@ -100,13 +100,46 @@ describe('authentication middleware', () => {
         params: { id: user.id }
       }
 
+      const response = new Response()
       await isAuthenticated(request, response, next)
-      expect(response.status()).toBe(403)
-      expect(response.error()).toBe('Expired token found.')
+      expect(response.status()).toBe(401)
+      expect(response.error().message).toBe('Expired token found.')
 
     } catch (e) {
       log.test({ msg: e })
       fail('It is not supposed to throw any error')
     }
   })
+
+  it('should authenticate the request', async () => {
+    try {
+      const userInfo = makeFakeUser()
+      const user = await createAccount({ fullName: userInfo.fullName, email: userInfo.email, password: userInfo.password })
+
+      const tokenInfo = makeToken({ user })
+      const token = await tokensDb.insert({
+        id: tokenInfo.getId(),
+        userId: tokenInfo.getUserId(),
+        accessToken: tokenInfo.getAccessToken()
+      })
+
+      const request = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authentication': `Bearer ${token.accessToken}`
+        },
+        path: `/api/users/${user.id}`,
+        requestURL: `http://localhost:3000/api/users/${user.id}`,
+        params: { id: user.id }
+      }
+
+      const response = new Response()
+      await isAuthenticated(request, response, next)
+
+    } catch (e) {
+      log.test({ msg: e })
+      fail('It is not supposed to throw any error')
+    }
+  })
+
 })

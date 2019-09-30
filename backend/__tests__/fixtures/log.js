@@ -2,7 +2,8 @@ export default Object.freeze({
   info,
   debug,
   error,
-  test
+  test,
+  createLogObject
 })
 
 function info({ type = 'INFO', msg }) {
@@ -23,4 +24,13 @@ function test(msg, e) {
 
 function log({ type, msg }) {
   // console.log(type, msg);
+}
+
+function createLogObject(e) {
+  return {
+    error: {
+      message: e.message,
+      stack: e.stack
+    }
+  }
 }

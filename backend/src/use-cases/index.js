@@ -9,7 +9,7 @@ import md5 from '../md5'
 import log from '../log'
 import jwt from '../jwt'
 
-const login = makeLogin({ usersDb, tokensDb, md5, log, moment })
+const login = makeLogin({ usersDb, tokensDb, md5, moment, log })
 const createAccount = makeCreateAccount({ usersDb, md5, log })
 const findUser = makeFindUser({ usersDb, log })
 const checkToken = makeCheckToken({ usersDb, tokensDb, jwt, moment, log })

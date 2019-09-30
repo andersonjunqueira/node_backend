@@ -1,19 +1,18 @@
 import makeUser from '../entities/user'
+import NotFoundError from '../errors/NotFoundError'
 
 export default function makeFindUser({ usersDb, log }) {
   return async function findUser({ id }) {
 
     log.debug({ msg: `Getting user ${id}`})
     if(!id) {
-      log.error({ error: `User id not provided`})
-      throw new Error('User id is mandatory.')
+      throw new BadRequestError('User id is mandatory')
     }
 
     log.debug({ msg: `Searching for a user for the id: ${id}`})
     const userInfo = await usersDb.findById({ id })
     if(!userInfo) {
-      log.error({ error: `User not found`})
-      throw new Error('User not found.')
+      throw new NotFoundError('User not found.')
     }
     
     const user = makeUser({ ...userInfo })

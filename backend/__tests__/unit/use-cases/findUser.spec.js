@@ -22,20 +22,6 @@ describe('find user use case', () => {
 
   it('should not find the user', async () => {
     try {
-
-      const fakeUser = makeFakeUser()
-      await createAccount({ fullName: fakeUser.fullName, email: fakeUser.email, password: fakeUser.password })
-
-      await findUser({ id: undefined })
-      fail('It is not supposed to get to this point')
-
-    } catch (e) {
-      expect(e.message).toBe('User id is mandatory.')
-    }
-  })
-
-  it('should not find the user', async () => {
-    try {
       const fakeUser = makeFakeUser()
       await createAccount({ fullName: fakeUser.fullName, email: fakeUser.email, password: fakeUser.password })
 

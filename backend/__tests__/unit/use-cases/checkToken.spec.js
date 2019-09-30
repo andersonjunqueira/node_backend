@@ -26,40 +26,40 @@ describe('check token use case', () => {
 
   it('should fail to check an undefined token', async () => {
     try {
-      
+
       await checkToken(undefined)
       fail('It is not supposed to get to this point')
 
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe('Invalid token.')
     }
   })
 
   it('should fail to check an empty token', async () => {
     try {
-      
+
       await checkToken('')
       fail('It is not supposed to get to this point')
 
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe('Invalid token.')
     }
   })
 
   it('should reject a malformed token', async () => {
     try {
-      
+
       await checkToken('123654987')
       fail('It is not supposed to get to this point')
 
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe('Invalid token.')
     }
   })
 
   it('should not validate an expired token', async () => {
     try {
-      
+
       const userInfo = makeFakeUser()
       const user = await usersDb.insert(userInfo)
       delete user.password
@@ -75,15 +75,15 @@ describe('check token use case', () => {
       await checkToken(token.accessToken)
       fail('It is not supposed to get to this point')
 
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe('Expired token found.')
     }
   })
 
   it('should not validate with an invalid user', async () => {
     try {
-      
-      const tokenInfo = makeToken({ user: { id: 321654987 }})
+
+      const tokenInfo = makeToken({ user: { id: 321654987 } })
       const token = await tokensDb.insert({
         id: tokenInfo.getId(),
         userId: tokenInfo.getUserId(),
@@ -92,28 +92,53 @@ describe('check token use case', () => {
       await checkToken(token.accessToken)
       fail('It is not supposed to get to this point')
 
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe(`Token's user not found.`)
     }
   })
 
-  it('should validate the token successfully', async () => {
+  it('should not validate a non existent token', async () => {
     try {
-      
+
       const userInfo = makeFakeUser()
       const user = await usersDb.insert(userInfo)
-  
+
       const tokenInfo = makeToken({ user })
       const token = await tokensDb.insert({
         id: tokenInfo.getId(),
         userId: tokenInfo.getUserId(),
         accessToken: tokenInfo.getAccessToken()
       })
-      await checkToken(token.accessToken)
 
-    } catch(e) {
-      log.test({ msg: e })
+      const affected = await tokensDb.remove({ id: token.id })
+      expect(affected).toBe(1)
+
+      await checkToken(token.accessToken)
       fail('It is not supposed to get to this point')
+
+    } catch (e) {
+      expect(e.message).toBe(`Token not found.`)
+    }
+  })
+
+  it('should not validate the token if user is blocked', async () => {
+    try {
+
+      const userInfo = makeFakeUser({ blockedOn: moment().toISOString() })
+      const user = await usersDb.insert(userInfo)
+
+      const tokenInfo = makeToken({ user })
+      const token = await tokensDb.insert({
+        id: tokenInfo.getId(),
+        userId: tokenInfo.getUserId(),
+        accessToken: tokenInfo.getAccessToken()
+      })
+
+      await checkToken(token.accessToken)
+      fail('It is not supposed to get to this point')
+
+    } catch (e) {
+      expect(e.message).toBe(`Token's user is blocked.`)
     }
   })
 

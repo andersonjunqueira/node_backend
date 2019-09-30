@@ -1,8 +1,10 @@
+import UnauthorizedError from '../errors/UnauthorizedError'
+
 export default function makeCheckToken({ usersDb, tokensDb, jwt, moment, log }) {
   return async function checkToken(accessToken) {
 
     if(!accessToken) {
-      throw new Error('Invalid token.')
+      throw new UnauthorizedError('Invalid token.')
     }
 
     let decoded
@@ -10,28 +12,28 @@ export default function makeCheckToken({ usersDb, tokensDb, jwt, moment, log }) 
       decoded = jwt.decode(accessToken)
     } catch (e) {
       if(e.message === 'jwt malformed') {
-        throw new Error(`Invalid token.`)
+        throw new UnauthorizedError(`Invalid token.`)
       }
     }
 
     log.debug({ msg: `Querying for the accessToken ${accessToken}`})
     const token = await tokensDb.findByAccessToken(accessToken)
     if(!token) {
-      throw new Error('Token not found.')
+      throw new UnauthorizedError('Token not found.')
     }
 
     if(moment().isAfter(moment.utc(decoded.exp))) {
-      throw new Error('Expired token found.')
+      throw new UnauthorizedError('Expired token found.')
     }
 
     log.debug({ msg: `Querying for the token's associated user`})
     const user = await usersDb.findById({ id: token.userId })
     if(!user) {
-      throw new Error(`Token's user not found.`)
+      throw new UnauthorizedError(`Token's user not found.`)
     }
 
     if(!!user.blockedOn) {
-      throw new Error(`Token's user is blocked.`)
+      throw new UnauthorizedError(`Token's user is blocked.`)
     }
 
   }

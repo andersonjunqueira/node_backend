@@ -59,4 +59,25 @@ describe('tokens db', () => {
     }
   })
 
+  it('should delete an access token', async () => {
+    try {
+
+      // create and insert token in the DB
+      const token = makeToken({ user: { id: 123 }})
+      const inserted = await tokensDb.insert({
+        id: token.getId(),
+        userId: token.getUserId(),
+        accessToken: token.getAccessToken()
+      })
+      expect(inserted).toBeTruthy()
+
+      const affected = await tokensDb.remove({ id: inserted.id })
+      expect(affected).toBe(1)
+
+    } catch (e) {
+      log.test(e)
+      fail(`It is not supposed to throw any error`)
+    }
+  })
+
 })

@@ -11,9 +11,7 @@ export default function makeCheckToken({ usersDb, tokensDb, jwt, moment, log }) 
     try {
       decoded = jwt.decode(accessToken)
     } catch (e) {
-      if(e.message === 'jwt malformed') {
-        throw new UnauthorizedError(`Invalid token.`)
-      }
+      throw new UnauthorizedError(`Invalid token.`)
     }
 
     log.debug({ msg: `Querying for the accessToken ${accessToken}`})

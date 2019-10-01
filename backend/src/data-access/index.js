@@ -1,6 +1,5 @@
 import mongodb from 'mongodb'
 
-import Id from '../Id'
 import makeUsersDb from './users-db'
 import makeTokensDb from './tokens-db'
 
@@ -16,5 +15,5 @@ export async function makeDb () {
   return client.db(dbName)
 }
 
-export const usersDb = makeUsersDb({ makeDb, Id })
-export const tokensDb = makeTokensDb({ makeDb, Id })
+export const usersDb = makeUsersDb({ makeDb })
+export const tokensDb = makeTokensDb({ makeDb })

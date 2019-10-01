@@ -3,23 +3,23 @@ import makeDb, { clearDb } from '../../fixtures/db'
 import makeFakeUser from '../../fixtures/user'
 
 import makeUsersDb from '../../../src/data-access/users-db'
-import makeFindUser from '../../../src/use-cases/findUser'
-import makeGetFindUser from '../../../src/controllers/getFindUser'
+import makeFindUserById from '../../../src/use-cases/findUserById'
+import makeGetFindUserById from '../../../src/controllers/getFindUserById'
 import makeCreateAccount from '../../../src/use-cases/createAccount'
 import md5 from '../../../src/md5'
 
 describe('get find user', () => {
   let usersDb
-  let findUser
-  let getFindUser
+  let findUserById
+  let getFindUserById
   let createAccount
 
   beforeEach(async () => {
     await makeDb()
     await clearDb()
     usersDb = makeUsersDb({ makeDb })
-    findUser = makeFindUser({ usersDb, log })
-    getFindUser = makeGetFindUser({ findUser, log })
+    findUserById = makeFindUserById({ usersDb, log })
+    getFindUserById = makeGetFindUserById({ findUserById, log })
     createAccount = makeCreateAccount({ usersDb, md5, log })
   })
 
@@ -35,7 +35,7 @@ describe('get find user', () => {
         params: { id: '123456' }
       }
   
-      const response = await getFindUser(request)
+      const response = await getFindUserById(request)
       expect(response).toBeTruthy()
       expect(response.statusCode).toBe(404)
 
@@ -65,7 +65,7 @@ describe('get find user', () => {
         }
       }
 
-      const response = await getFindUser(request)
+      const response = await getFindUserById(request)
       expect(response).toBeTruthy()
       expect(response.statusCode).toBe(200)
 

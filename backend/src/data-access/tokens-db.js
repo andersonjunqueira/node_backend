@@ -1,4 +1,4 @@
-export default function makeTokensDb({ makeDb, Id }) {
+export default function makeTokensDb({ makeDb }) {
 
   return Object.freeze({
     findByAccessToken,
@@ -18,7 +18,7 @@ export default function makeTokensDb({ makeDb, Id }) {
     return { id, ...info }
   }
 
-  async function insert({ id: _id = Id.makeId(), ...tokenInfo }) {
+  async function insert({ id: _id, ...tokenInfo }) {
     const db = await makeDb()
     const result = await db.collection('tokens')
       .insertOne({ _id, ...tokenInfo })

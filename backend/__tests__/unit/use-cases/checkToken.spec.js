@@ -8,7 +8,6 @@ import makeUsersDb from '../../../src/data-access/users-db'
 import makeTokensDb from '../../../src/data-access/tokens-db'
 import makeCheckToken from '../../../src/use-cases/checkToken'
 import makeToken from '../../../src/entities/token'
-import Id from '../../../src/Id'
 import jwt from '../../../src/jwt'
 
 describe('check token use case', () => {
@@ -19,8 +18,8 @@ describe('check token use case', () => {
   beforeEach(async () => {
     await makeDb()
     await clearDb()
-    usersDb = makeUsersDb({ makeDb, Id })
-    tokensDb = makeTokensDb({ makeDb, Id })
+    usersDb = makeUsersDb({ makeDb })
+    tokensDb = makeTokensDb({ makeDb })
     checkToken = makeCheckToken({ usersDb, tokensDb, jwt, moment, log })
   })
 

@@ -1,13 +1,11 @@
-import BadRequestError from '../errors/BadRequestError'
-
-export default function makeGetFindUser({ findUser, log }) {
-  return async function getFindUser(httpRequest) {
+export default function makeGetFindUserById({ findUserById, log }) {
+  return async function getFindUserById(httpRequest) {
     try {
       
       log.debug({ msg: httpRequest })
       const { id } = httpRequest.params
 
-      const user = await findUser({ id })
+      const user = await findUserById(id)
       delete user.password
 
       return {

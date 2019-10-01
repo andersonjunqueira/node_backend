@@ -1,4 +1,4 @@
-export default function makeUsersDb ({ makeDb, Id }) {
+export default function makeUsersDb ({ makeDb }) {
 
   return Object.freeze({
     findById,
@@ -38,7 +38,7 @@ export default function makeUsersDb ({ makeDb, Id }) {
     return found
   }
 
-  async function insert ({ id: _id = Id.makeId(), ...userInfo }) {
+  async function insert ({ id: _id, ...userInfo }) {
     const db = await makeDb()
     const result = await db
       .collection('users')

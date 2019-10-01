@@ -5,20 +5,20 @@ export default function buildMakeToken ({ Id, jwt }) {
     accessToken,
     user,
     exp
-  } = {}) {
+  }) {
     if (!Id.isValidId(id)) {
       throw new Error('Token must have an id.')
     }
+    
     if(!user) {
       throw new Error('Token must be linked to a user.')
     }
-    if (!accessToken) {
-      accessToken = jwt.generate({ user, exp })
-    }
+    
+    const token = accessToken || jwt.generate({ user, exp }) 
     
     return Object.freeze({
       getId: () => id,
-      getAccessToken: () => accessToken,
+      getAccessToken: () => token,
       getUserId: () => user.id || user.getId(), 
     })
   }

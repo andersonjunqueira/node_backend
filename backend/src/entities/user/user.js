@@ -10,7 +10,7 @@ export default function buildMakeUser ({ Id, md5, sanitize, validateEmail, momen
     blockedOn,
     createdOn,
     modifiedOn = moment().toISOString()
-  } = {}) {
+  }) {
     if (!Id.isValidId(id)) {
       throw new Error('User must have an id.')
     }

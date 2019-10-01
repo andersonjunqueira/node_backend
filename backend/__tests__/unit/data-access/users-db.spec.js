@@ -2,7 +2,6 @@ import log from '../../fixtures/log'
 import makeDb, { clearDb } from '../../fixtures/db'
 import makeFakeUser from '../../fixtures/user'
 
-import Id from '../../../src/Id'
 import makeUsersDb from '../../../src/data-access/users-db'
 import makeUser from '../../../src/entities/user'
 
@@ -12,7 +11,7 @@ describe('users db', () => {
   beforeEach(async () => {
     await makeDb()
     await clearDb()
-    usersDb = makeUsersDb({ makeDb, Id })
+    usersDb = makeUsersDb({ makeDb })
   })
 
   it('should find user by id', async () => {
@@ -128,6 +127,18 @@ describe('users db', () => {
       const checkUser = makeUser(check)
       expect(checkUser.getBlockedOn()).toBeTruthy()
       expect(checkUser.getModifiedOn()).not.toBe(modifiedOn)
+
+    } catch (e) {
+      log.test(e)
+      fail('It is not supposed to throw any error')
+    }
+  })
+
+  it('should not update inexistent user', async () => {
+    try {
+      
+      const updated = await usersDb.update({ id: '123abc', fullName: 'Fake User' })
+      expect(updated === null).toBeTruthy();
 
     } catch (e) {
       log.test(e)

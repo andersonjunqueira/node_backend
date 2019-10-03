@@ -9,7 +9,7 @@ export default function makeIsAuthenticated({ checkToken, log }) {
         throw new UnauthorizedError('Authentication header not present.')
       }
       authenticationHeader = authenticationHeader.replace('Bearer ', '')
-      await checkToken(authenticationHeader)
+      await checkToken(authenticationHeader, 'LOGIN')
       return next()
 
     } catch(e) {

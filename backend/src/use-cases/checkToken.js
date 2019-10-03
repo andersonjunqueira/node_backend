@@ -1,7 +1,7 @@
 import UnauthorizedError from '../errors/UnauthorizedError'
 
 export default function makeCheckToken({ usersDb, tokensDb, jwt, moment, log }) {
-  return async function checkToken(accessToken) {
+  return async function checkToken(accessToken, requiredType) {
 
     if(!accessToken) {
       throw new UnauthorizedError('Invalid token.')
@@ -18,6 +18,10 @@ export default function makeCheckToken({ usersDb, tokensDb, jwt, moment, log }) 
     const token = await tokensDb.findByAccessToken(accessToken)
     if(!token) {
       throw new UnauthorizedError('Token not found.')
+    }
+
+    if(token.type !== requiredType) {
+      throw new UnauthorizedError('Wrong token.')
     }
 
     if(moment().isAfter(moment.utc(decoded.exp))) {

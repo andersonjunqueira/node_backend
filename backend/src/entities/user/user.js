@@ -1,3 +1,5 @@
+import BadRequestError from '../../errors/BadRequestError'
+
 export default function buildMakeUser ({ Id, md5, sanitize, validateEmail, moment }) {
   return function makeUser ({
     id = Id.makeId(),
@@ -12,13 +14,13 @@ export default function buildMakeUser ({ Id, md5, sanitize, validateEmail, momen
     modifiedOn = moment().toISOString()
   }) {
     if (!Id.isValidId(id)) {
-      throw new Error('User must have an id.')
+      throw new BadRequestError('User must have an id.')
     }
     if (!validateEmail(email)) {
-      throw new Error('User must have a valid e-mail.')
+      throw new BadRequestError('User must have a valid e-mail.')
     }
     if (!password) {
-      throw new Error('User password must have a password.')
+      throw new BadRequestError('User password must have a password.')
     }
     
     let fullNameSanitized = sanitize(fullName)

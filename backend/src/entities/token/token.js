@@ -1,3 +1,5 @@
+import BadRequestError from '../../errors/BadRequestError'
+
 export default function buildMakeToken ({ Id, jwt }) {
   return function makeToken ({
     id = Id.makeId(),
@@ -7,11 +9,15 @@ export default function buildMakeToken ({ Id, jwt }) {
     type
   }) {
     if (!Id.isValidId(id)) {
-      throw new Error('Token must have an id.')
+      throw new BadRequestError('Token must have an id.')
     }
     
     if(!user) {
-      throw new Error('Token must be linked to a user.')
+      throw new BadRequestError('Token must be linked to a user.')
+    }
+
+    if(type && type !== 'LOGIN' && type !== 'PASSWORD' && type !== 'CHANGEPASS') {
+      throw new BadRequestError('Invalid token type.')
     }
 
     accessToken = accessToken || jwt.generate({ user, exp })

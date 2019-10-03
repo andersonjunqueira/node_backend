@@ -87,7 +87,8 @@ describe('authentication middleware', () => {
       const token = await tokensDb.insert({
         id: tokenInfo.getId(),
         userId: tokenInfo.getUserId(),
-        accessToken: tokenInfo.getAccessToken()
+        accessToken: tokenInfo.getAccessToken(),
+        type: tokenInfo.getType()
       })
 
       const request = {
@@ -120,7 +121,8 @@ describe('authentication middleware', () => {
       const token = await tokensDb.insert({
         id: tokenInfo.getId(),
         userId: tokenInfo.getUserId(),
-        accessToken: tokenInfo.getAccessToken()
+        accessToken: tokenInfo.getAccessToken(),
+        type: tokenInfo.getType()
       })
 
       const request = {
@@ -135,6 +137,40 @@ describe('authentication middleware', () => {
 
       const response = new Response()
       await isAuthenticated(request, response, next)
+
+    } catch (e) {
+      log.test({ msg: e })
+      fail('It is not supposed to throw any error')
+    }
+  })
+
+  it('should not authenticate with token of wrong type', async () => {
+    try {
+      const userInfo = makeFakeUser()
+      const user = await createAccount({ fullName: userInfo.fullName, email: userInfo.email, password: userInfo.password })
+
+      const tokenInfo = makeToken({ user, type: 'PASSWORD' })
+      const token = await tokensDb.insert({
+        id: tokenInfo.getId(),
+        userId: tokenInfo.getUserId(),
+        accessToken: tokenInfo.getAccessToken(),
+        type: tokenInfo.getType()
+      })
+
+      const request = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authentication': `Bearer ${token.accessToken}`
+        },
+        path: `/api/users/${user.id}`,
+        requestURL: `http://localhost:3000/api/users/${user.id}`,
+        params: { id: user.id }
+      }
+
+      const response = new Response()
+      await isAuthenticated(request, response, next)
+      expect(response.status()).toBe(401)
+      expect(response.error().message).toBe('Wrong token.')
 
     } catch (e) {
       log.test({ msg: e })

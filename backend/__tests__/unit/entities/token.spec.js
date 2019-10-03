@@ -22,14 +22,46 @@ describe('token', () => {
     }
   })
 
-  it('should be created from user', () => {
+  it('should not create a token with wrong type', () => {
     try {
-      const token = makeToken({ user: { id: 1 }})
+      makeToken({ user: { id: 1 }, type: 'NOTYPE' })
+      fail('It is not supposed to get here')
+    } catch(e) {
+      expect(e.message).toBe('Invalid token type.')
+    }
+  })
+
+  it('should create LOGIN token', () => {
+    try {
+      const token = makeToken({ user: { id: 1 } })
       expect(token.getId()).toBeTruthy()
       expect(token.getUserId()).toBeTruthy()
+      expect(token.getType()).toBe('LOGIN')
     } catch(e) {
-      log.test({ msg: e })
       fail('It is not supposed to throw any error')
     }
   })
+
+  it('should create PASSWORD token', () => {
+    try {
+      const token = makeToken({ user: { id: 1 }, type: 'PASSWORD' })
+      expect(token.getId()).toBeTruthy()
+      expect(token.getUserId()).toBeTruthy()
+      expect(token.getType()).toBe('PASSWORD')
+    } catch(e) {
+      fail('It is not supposed to throw any error')
+    }
+  })
+
+  it('should create CHANGEPASS token', () => {
+    try {
+      const token = makeToken({ user: { id: 1 }, type: 'CHANGEPASS' })
+      expect(token.getId()).toBeTruthy()
+      expect(token.getUserId()).toBeTruthy()
+      expect(token.getType()).toBe('CHANGEPASS')
+    } catch(e) {
+      fail('It is not supposed to throw any error')
+    }
+  })
+
 })

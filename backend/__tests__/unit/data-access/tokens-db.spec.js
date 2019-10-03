@@ -17,7 +17,7 @@ describe('tokens db', () => {
     try {
 
       // create and insert token in the DB
-      const token = makeToken({ user: { id: 123 }})
+      const token = makeToken({ user: { id: 123 } })
       const inserted = await tokensDb.insert({
         id: token.getId(),
         userId: token.getUserId(),
@@ -41,7 +41,7 @@ describe('tokens db', () => {
     try {
 
       // create and insert token in the DB
-      const token = makeToken({ user: { id: 123 }})
+      const token = makeToken({ user: { id: 123 } })
       const inserted = await tokensDb.insert({
         id: token.getId(),
         userId: token.getUserId(),
@@ -63,7 +63,7 @@ describe('tokens db', () => {
     try {
 
       // create and insert token in the DB
-      const token = makeToken({ user: { id: 123 }})
+      const token = makeToken({ user: { id: 123 } })
       const inserted = await tokensDb.insert({
         id: token.getId(),
         userId: token.getUserId(),

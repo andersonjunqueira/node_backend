@@ -13,10 +13,12 @@ export default function buildMakeToken ({ Id, jwt }) {
     if(!user) {
       throw new Error('Token must be linked to a user.')
     }
+
+    accessToken = accessToken || jwt.generate({ user, exp })
     
     return Object.freeze({
       getId: () => id,
-      getAccessToken: () => accessToken || jwt.generate({ user, exp }),
+      getAccessToken: () => accessToken.trim(),
       getUserId: () => user.id || user.getId(), 
       getType: () => type || 'LOGIN', 
     })

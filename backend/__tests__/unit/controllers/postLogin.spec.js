@@ -37,8 +37,8 @@ describe('post login', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        path: '/api/login',
-        requestURL: `http://localhost:3000/api/login`,
+        path: '/api/v0/login',
+        requestURL: `http://localhost:3000/api/v0/login`,
         body: { email: user.email, password }
       }
 
@@ -65,8 +65,8 @@ describe('post login', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        path: '/api/login',
-        requestURL: `http://localhost:3000/api/login`,
+        path: '/api/v0/login',
+        requestURL: `http://localhost:3000/api/v0/login`,
         body: { password }
       }
 
@@ -93,8 +93,8 @@ describe('post login', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        path: '/api/login',
-        requestURL: `http://localhost:3000/api/login`,
+        path: '/api/v0/login',
+        requestURL: `http://localhost:3000/api/v0/login`,
         body: { email: user }
       }
 

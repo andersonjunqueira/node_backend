@@ -30,8 +30,8 @@ describe('get find user', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        path: '/api/users/123456',
-        requestURL: `http://localhost:3000/api/users/123456`,
+        path: '/api/v0/users/123456',
+        requestURL: `http://localhost:3000/api/v0/users/123456`,
         params: { id: '123456' }
       }
   
@@ -58,8 +58,8 @@ describe('get find user', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        path:`/api/users/${insertedUser.id}`,
-        requestURL: `http://localhost:3000/api/users/${insertedUser.id}`,
+        path:`/api/v0/users/${insertedUser.id}`,
+        requestURL: `http://localhost:3000/api/v0/users/${insertedUser.id}`,
         params: { 
           id: insertedUser.id 
         }

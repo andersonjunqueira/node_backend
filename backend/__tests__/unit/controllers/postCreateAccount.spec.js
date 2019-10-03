@@ -27,8 +27,8 @@ describe('post create account', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        path: '/api/register',
-        requestURL: `http://localhost:3000/api/register`,
+        path: '/api/v0/register',
+        requestURL: `http://localhost:3000/api/v0/register`,
         body: { email: 'user@domain.com', password: 'abc123' }
       }
 
@@ -48,8 +48,8 @@ describe('post create account', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        path: '/api/register',
-        requestURL: `http://localhost:3000/api/register`,
+        path: '/api/v0/register',
+        requestURL: `http://localhost:3000/api/v0/register`,
         body: { fullName: 'Any Name', password: 'abc123' }
       }
 
@@ -69,8 +69,8 @@ describe('post create account', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        path: '/api/register',
-        requestURL: `http://localhost:3000/api/register`,
+        path: '/api/v0/register',
+        requestURL: `http://localhost:3000/api/v0/register`,
         body: { fullName: 'Any Name', email: 'user@domain.com' }
       }
 
@@ -91,8 +91,8 @@ describe('post create account', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        path: '/api/register',
-        requestURL: `http://localhost:3000/api/register`,
+        path: '/api/v0/register',
+        requestURL: `http://localhost:3000/api/v0/register`,
         body: { fullName: user.fullName, email: user.email, password: user.password }
       }
 
@@ -114,8 +114,8 @@ describe('post create account', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        path: '/api/register',
-        requestURL: `http://localhost:3000/api/register`,
+        path: '/api/v0/register',
+        requestURL: `http://localhost:3000/api/v0/register`,
         body: { fullName: user.fullName, email: user.email, password: user.password }
       }
 

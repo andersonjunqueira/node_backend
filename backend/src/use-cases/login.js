@@ -69,7 +69,8 @@ export default function makeLogin({ usersDb, tokensDb, md5, moment, log }) {
       await tokensDb.insert({
         id: token.getId(),
         userId: token.getUserId(),
-        accessToken: token.getAccessToken()
+        accessToken: token.getAccessToken(),
+        type: token.getType()
       })
       
       // token + token expiration datetime

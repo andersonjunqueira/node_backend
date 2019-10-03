@@ -1,10 +1,10 @@
-
 export default function buildMakeToken ({ Id, jwt }) {
   return function makeToken ({
     id = Id.makeId(),
     accessToken,
     user,
-    exp
+    exp,
+    type
   }) {
     if (!Id.isValidId(id)) {
       throw new Error('Token must have an id.')
@@ -14,12 +14,11 @@ export default function buildMakeToken ({ Id, jwt }) {
       throw new Error('Token must be linked to a user.')
     }
     
-    const token = accessToken || jwt.generate({ user, exp }) 
-    
     return Object.freeze({
       getId: () => id,
-      getAccessToken: () => token,
+      getAccessToken: () => accessToken || jwt.generate({ user, exp }),
       getUserId: () => user.id || user.getId(), 
+      getType: () => type || 'LOGIN', 
     })
   }
 }

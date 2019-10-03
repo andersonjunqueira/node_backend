@@ -5,7 +5,7 @@ export default function makePostCreateAccount({ createAccount, log }) {
     try {
       const { fullName, email, password } = httpRequest.body
       if(!fullName || !email || !password) {
-        throw new BadRequestError('Full name, e-mail and password are mandatory')
+        throw new BadRequestError('Full name, e-mail and password are mandatory.')
       }
 
       const insertedUser = await createAccount({ fullName, email, password })

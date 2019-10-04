@@ -1,10 +1,10 @@
 export default function makeEmailTransporter({ nodemailer }) {
   return nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
+    host: process.env.MD_SMTP_HOST,
+    port: process.env.MD_SMTP_PORT,
     auth: {
-        user: 'gerald23@ethereal.email',
-        pass: 'QbsJ3BkNDqCMu6QK9A'
+        user: process.env.MD_SMTP_USER,
+        pass: process.env.MD_SMTP_PASSWORD
     }
   });
 } 

@@ -7,6 +7,7 @@ import makeCreateAccount from './createAccount'
 import makeFindUserById from './findUserById'
 import makeCheckToken from './checkToken'
 import makeForgotPassword from './forgotPassword'
+import makeChangePassword from './changePassword'
 import makeEmailSender from '../email/emailSender'
 import makeEmailTransporter from '../email/emailTransporter'
 import md5 from '../md5'
@@ -21,13 +22,15 @@ const createAccount = makeCreateAccount({ usersDb, md5, log })
 const findUserById = makeFindUserById({ usersDb, log })
 const checkToken = makeCheckToken({ usersDb, tokensDb, jwt, moment, log })
 const forgotPassword = makeForgotPassword({ usersDb, tokensDb, emailSender, log })
+const changePassword = makeChangePassword({ usersDb, moment, emailSender, md5, log })
 
 const services = Object.freeze({
   login,
   createAccount,
   findUserById,
   checkToken,
-  forgotPassword
+  forgotPassword,
+  changePassword
 })
 
 export default services
@@ -36,5 +39,6 @@ export {
   createAccount,
   findUserById,
   checkToken,
-  forgotPassword
+  forgotPassword,
+  changePassword
 }

@@ -21,7 +21,7 @@ export default function makeForgotPassword({ usersDb, tokensDb, emailSender, log
     })
 
     // send email with url to change password
-    await emailSender.sendForgotPasswordEmail(userInfo.email, userInfo.fullName, token.getAccessToken())
+    await emailSender.sendForgotPassword(userInfo.email, userInfo.fullName, token.getAccessToken())
 
   }
 }

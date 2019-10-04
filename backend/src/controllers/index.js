@@ -7,6 +7,7 @@ import services from '../use-cases'
 import makePostLogin from './postLogin'
 import makePostCreateAccount from './postCreateAccount'
 import makePostForgotPassword from './postForgotPassword'
+import makePostChangePassword from './postChangePassword'
 import makeGetFindUserById from './getFindUserById'
 import notFound from './not-found'
 
@@ -14,6 +15,7 @@ import notFound from './not-found'
 const postLogin = makePostLogin({ login: services.login, log })
 const postCreateAccount = makePostCreateAccount({ createAccount: services.createAccount, log })
 const postForgotPassword = makePostForgotPassword({ forgotPassword: services.forgotPassword, log })
+const postChangePassword = makePostChangePassword({ changePassword: services.changePassword, log })
 const getFindUserById = makeGetFindUserById({ findByUserId: services.findUserById, log })
 
 // export the controllers
@@ -21,6 +23,7 @@ const controller = Object.freeze({
   postLogin,
   postCreateAccount,
   postForgotPassword,
+  postChangePassword,
   getFindUserById,
   notFound,
 })
@@ -30,6 +33,7 @@ export {
   postLogin, 
   postCreateAccount, 
   postForgotPassword,
+  postChangePassword,
   getFindUserById,
   notFound 
 }

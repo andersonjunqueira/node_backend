@@ -24,7 +24,7 @@ describe('token', () => {
 
   it('should not create a token with wrong type', () => {
     try {
-      makeToken({ user: { id: 1 }, type: 'NOTYPE' })
+      makeToken({ user: { id: 1 }, type: 'OTHERTYPE' })
       fail('It is not supposed to get here')
     } catch(e) {
       expect(e.message).toBe('Invalid token type.')
@@ -48,17 +48,6 @@ describe('token', () => {
       expect(token.getId()).toBeTruthy()
       expect(token.getUserId()).toBeTruthy()
       expect(token.getType()).toBe('PASSWORD')
-    } catch(e) {
-      fail('It is not supposed to throw any error')
-    }
-  })
-
-  it('should create CHANGEPASS token', () => {
-    try {
-      const token = makeToken({ user: { id: 1 }, type: 'CHANGEPASS' })
-      expect(token.getId()).toBeTruthy()
-      expect(token.getUserId()).toBeTruthy()
-      expect(token.getType()).toBe('CHANGEPASS')
     } catch(e) {
       fail('It is not supposed to throw any error')
     }

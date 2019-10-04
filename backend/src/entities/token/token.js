@@ -16,7 +16,7 @@ export default function buildMakeToken ({ Id, jwt }) {
       throw new BadRequestError('Token must be linked to a user.')
     }
 
-    if(type && type !== 'LOGIN' && type !== 'PASSWORD' && type !== 'CHANGEPASS') {
+    if(type && type !== 'LOGIN' && type !== 'PASSWORD') {
       throw new BadRequestError('Invalid token type.')
     }
 

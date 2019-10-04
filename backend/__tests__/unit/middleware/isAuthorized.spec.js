@@ -10,15 +10,15 @@ import makeTokensDb from '../../../src/data-access/tokens-db'
 import makeToken from '../../../src/entities/token'
 import makeCreateAccount from '../../../src/use-cases/createAccount'
 import makeCheckToken from '../../../src/use-cases/checkToken'
-import makeIsAuthenticated from '../../../src/middlewares/authentication'
+import makeIsAuthorized from '../../../src/middlewares/isAuthorized'
 import md5 from '../../../src/md5'
 import jwt from '../../../src/jwt'
 
-describe('authentication middleware', () => {
+describe('isAuthorized middleware', () => {
   let usersDb
   let tokensDb
   let checkToken
-  let isAuthenticated
+  let isAuthorized
   let createAccount
   let next = (param) => param
 
@@ -28,7 +28,7 @@ describe('authentication middleware', () => {
     usersDb = makeUsersDb({ makeDb })
     tokensDb = makeTokensDb({ makeDb })
     checkToken = makeCheckToken({ usersDb, tokensDb, jwt, moment, log })
-    isAuthenticated = makeIsAuthenticated({ checkToken, log })
+    isAuthorized = makeIsAuthorized({ checkToken, tokenType: 'LOGIN', log })
     createAccount = makeCreateAccount({ usersDb, md5, log })
   })
 
@@ -44,7 +44,7 @@ describe('authentication middleware', () => {
       }
 
       const response = new Response()
-      await isAuthenticated(request, response, next)
+      await isAuthorized(request, response, next)
       expect(response.status()).toBe(401)
       expect(response.error().message).toBe('Authentication header not present.')
 
@@ -67,7 +67,7 @@ describe('authentication middleware', () => {
       }
 
       const response = new Response()
-      await isAuthenticated(request, response, next)
+      await isAuthorized(request, response, next)
       expect(response.status()).toBe(401)
       expect(response.error().message).toBe('Invalid token.')
 
@@ -102,7 +102,7 @@ describe('authentication middleware', () => {
       }
 
       const response = new Response()
-      await isAuthenticated(request, response, next)
+      await isAuthorized(request, response, next)
       expect(response.status()).toBe(401)
       expect(response.error().message).toBe('Expired token found.')
 
@@ -136,7 +136,7 @@ describe('authentication middleware', () => {
       }
 
       const response = new Response()
-      await isAuthenticated(request, response, next)
+      await isAuthorized(request, response, next)
 
     } catch (e) {
       log.test({ msg: e })
@@ -168,7 +168,7 @@ describe('authentication middleware', () => {
       }
 
       const response = new Response()
-      await isAuthenticated(request, response, next)
+      await isAuthorized(request, response, next)
       expect(response.status()).toBe(401)
       expect(response.error().message).toBe('Wrong token.')
 

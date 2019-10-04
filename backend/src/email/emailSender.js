@@ -1,6 +1,6 @@
 export default function buildEmailSender({ transporter, log }) {
 
-  const sendForgotPasswordEmail = async (to, name, token) => {
+  const sendForgotPassword = async (to, name, token) => {
     transporter.sendMail({
       from: `${process.env.MD_SMTP_FROM_NAME} <${process.env.MD_SMTP_FROM_EMAIL}>`,
       to,
@@ -13,8 +13,20 @@ export default function buildEmailSender({ transporter, log }) {
     });
   }
 
+  const sendChangePassword = async (to, name) => {
+    transporter.sendMail({
+      from: `${process.env.MD_SMTP_FROM_NAME} <${process.env.MD_SMTP_FROM_EMAIL}>`,
+      to,
+      subject: '[PHYSED] Password Changed',
+      text: 'Enable html view to see this message',
+      html: `<p>Hello ${name},</p>
+      <p>Your password was changed. If you did not change your password, please, contact the administrators</p>`
+    });
+  }
+
   const sender = Object.freeze({
-    sendForgotPasswordEmail
+    sendForgotPassword,
+    sendChangePassword
   })
 
   return sender

@@ -38,5 +38,7 @@ export default function makeCheckToken({ usersDb, tokensDb, jwt, moment, log }) 
       throw new UnauthorizedError(`Token's user is blocked.`)
     }
 
+    return user
+
   }
 }

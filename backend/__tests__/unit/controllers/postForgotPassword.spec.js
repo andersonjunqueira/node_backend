@@ -1,6 +1,7 @@
 import log from '../../fixtures/log'
 import makeDb, { clearDb } from '../../fixtures/db'
 import makeFakeUser from '../../fixtures/user'
+import passwd from '../../fixtures/passwd'
 
 import makeUsersDb from '../../../src/data-access/users-db'
 import makeTokensDb from '../../../src/data-access/tokens-db'
@@ -37,7 +38,7 @@ describe('post forgot password', () => {
     emailSender = makeEmailSender({ transporter, log })    
     forgotPassword = makeForgotPassword({ usersDb, tokensDb, emailSender, log })
     postForgotPassword = makePostForgotPassword({ forgotPassword, log })
-    createAccount = makeCreateAccount({ usersDb, md5, log })
+    createAccount = makeCreateAccount({ usersDb, passwd, md5, log })
     jest.clearAllMocks()
   })
 

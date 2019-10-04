@@ -4,6 +4,7 @@ import makeDb, { clearDb } from '../../fixtures/db'
 import makeFakeUser from '../../fixtures/user'
 import log from '../../fixtures/log'
 import Response from '../../fixtures/Response'
+import passwd from '../../fixtures/passwd'
 
 import makeUsersDb from '../../../src/data-access/users-db'
 import makeTokensDb from '../../../src/data-access/tokens-db'
@@ -21,7 +22,7 @@ describe('isAuthorized middleware', () => {
   let isAuthorized
   let createAccount
   let next = (param) => param
-
+  
   beforeEach(async () => {
     await makeDb()
     await clearDb()
@@ -29,7 +30,7 @@ describe('isAuthorized middleware', () => {
     tokensDb = makeTokensDb({ makeDb })
     checkToken = makeCheckToken({ usersDb, tokensDb, jwt, moment, log })
     isAuthorized = makeIsAuthorized({ checkToken, tokenType: 'LOGIN', log })
-    createAccount = makeCreateAccount({ usersDb, md5, log })
+    createAccount = makeCreateAccount({ usersDb, passwd, md5, log })
   })
 
   it('should not check an empty token', async () => {

@@ -1,6 +1,7 @@
 import log from '../../fixtures/log'
 import makeFakeUser from '../../fixtures/user'
 import makeDb, { clearDb } from '../../fixtures/db'
+import passwd from '../../fixtures/passwd'
 
 import makeUsersDb from '../../../src/data-access/users-db'
 import makePostCreateAccount from '../../../src/controllers/postCreateAccount'
@@ -11,12 +12,12 @@ describe('post create account', () => {
   let usersDb
   let postCreateAccount
   let createAccount
-
+  
   beforeEach(async () => {
     await makeDb()
     await clearDb()
     usersDb = makeUsersDb({ makeDb })
-    createAccount = makeCreateAccount({ usersDb, md5, log })
+    createAccount = makeCreateAccount({ usersDb, passwd, md5, log })
     postCreateAccount = makePostCreateAccount({ createAccount, log })
   })
 

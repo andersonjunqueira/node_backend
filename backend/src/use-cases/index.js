@@ -13,16 +13,17 @@ import makeEmailTransporter from '../email/emailTransporter'
 import md5 from '../md5'
 import log from '../log'
 import jwt from '../jwt'
+import passwd from '../passwd'
 
 const emailTransporter = makeEmailTransporter({ nodemailer });
 const emailSender = makeEmailSender({ transporter: emailTransporter, log })
 
 const login = makeLogin({ usersDb, tokensDb, md5, moment, log })
-const createAccount = makeCreateAccount({ usersDb, md5, log })
+const createAccount = makeCreateAccount({ usersDb, passwd, md5, log })
 const findUserById = makeFindUserById({ usersDb, log })
 const checkToken = makeCheckToken({ usersDb, tokensDb, jwt, moment, log })
 const forgotPassword = makeForgotPassword({ usersDb, tokensDb, emailSender, log })
-const changePassword = makeChangePassword({ usersDb, moment, emailSender, md5, log })
+const changePassword = makeChangePassword({ usersDb, emailSender, passwd, moment, md5, log })
 
 const services = Object.freeze({
   login,

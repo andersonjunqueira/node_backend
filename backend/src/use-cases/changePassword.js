@@ -1,8 +1,13 @@
 import makeUser from '../entities/user'
-import NotFoundError from '../errors/NotFoundError'
+import BadRequestError from '../errors/BadRequestError'
 
-export default function makeChangePassword({ usersDb, moment, emailSender, md5, log }) {
+export default function makeChangePassword({ usersDb, emailSender, passwd, moment, md5, log }) {
   return async function changePassword({ user, newpassword }) {
+
+    const broken = passwd.checkRules(newpassword)
+    if(broken.length != 0) {
+      throw new BadRequestError(broken)
+    }
 
     const userInfo = makeUser({ ...user, password: md5(newpassword) })
 

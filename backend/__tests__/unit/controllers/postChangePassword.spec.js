@@ -3,6 +3,7 @@ import moment from 'moment'
 import log from '../../fixtures/log'
 import makeDb, { clearDb } from '../../fixtures/db'
 import makeFakeUser from '../../fixtures/user'
+import passwd from '../../fixtures/passwd'
 
 import makeToken from '../../../src/entities/token'
 import makeUsersDb from '../../../src/data-access/users-db'
@@ -38,9 +39,9 @@ describe('post change password', () => {
     tokensDb = makeTokensDb({ makeDb })
     transporter = makeEmailTransporter({ nodemailer })
     emailSender = makeEmailSender({ transporter, log })    
-    changePassword = makeChangePassword({ usersDb, moment, emailSender, md5, log })
+    changePassword = makeChangePassword({ usersDb, emailSender, passwd, moment, md5, log })
     postChangePassword = makePostChangePassword({ changePassword, log })
-    createAccount = makeCreateAccount({ usersDb, md5, log })
+    createAccount = makeCreateAccount({ usersDb, passwd, md5, log })
     jest.clearAllMocks()
   })
 

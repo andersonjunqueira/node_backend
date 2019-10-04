@@ -1,10 +1,16 @@
 import makeUser from '../entities/user'
 import BadRequestError from '../errors/BadRequestError'
 
-export default function makeCreateAccount({ usersDb, md5, log }) {
+export default function makeCreateAccount({ usersDb, passwd, md5, log }) {
   return async function createAccount({ fullName, email, password }) {
 
     log.debug({ msg: `Creating Account for ${email}`})
+
+    const broken = passwd.checkRules(password)
+    if(broken.length != 0) {
+      throw new BadRequestError(broken)
+    }
+
     log.debug({ msg: `Searching for a user with the same e-mail: ${email}`})
     const userInfo = await usersDb.findByEmail({ email })
     if(userInfo) {

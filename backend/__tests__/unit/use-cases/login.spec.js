@@ -3,6 +3,7 @@ import moment from 'moment'
 import makeDb, { clearDb } from '../../fixtures/db'
 import log from '../../fixtures/log'
 import makeFakeUser from '../../fixtures/user'
+import passwd from '../../fixtures/passwd'
 
 import makeUsersDb from '../../../src/data-access/users-db'
 import makeTokensDb from '../../../src/data-access/tokens-db'
@@ -24,7 +25,7 @@ describe('login use case', () => {
     usersDb = makeUsersDb({ makeDb })
     tokensDb = makeTokensDb({ makeDb })
     login = makeLogin({ usersDb, tokensDb, md5, moment, log })
-    createAccount = makeCreateAccount({ usersDb, md5, log })
+    createAccount = makeCreateAccount({ usersDb, passwd, md5, log })
     findUserById = makeFindUserById({ usersDb, log })
   })
 

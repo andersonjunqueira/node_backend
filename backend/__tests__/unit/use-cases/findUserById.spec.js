@@ -1,6 +1,7 @@
 import log from '../../fixtures/log'
 import makeDb, { clearDb } from '../../fixtures/db'
 import makeFakeUser from '../../fixtures/user'
+import passwd from '../../fixtures/passwd'
 
 import md5 from '../../../src/md5'
 import makeUsersDb from '../../../src/data-access/users-db'
@@ -17,7 +18,7 @@ describe('find user use case', () => {
     await clearDb()
     usersDb = makeUsersDb({ makeDb })
     findUserById = makeFindUserById({ usersDb, log })
-    createAccount = makeCreateAccount({ usersDb, md5, log })
+    createAccount = makeCreateAccount({ usersDb, passwd, md5, log })
   })
 
   it('should not find the user with no id', async () => {

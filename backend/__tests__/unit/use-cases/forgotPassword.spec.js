@@ -2,6 +2,7 @@ import log from '../../fixtures/log'
 import makeDb, { clearDb } from '../../fixtures/db'
 import makeFakeUser from '../../fixtures/user'
 import makeEmailTransporter from '../../fixtures/emailTransporter'
+import passwd from '../../fixtures/passwd'
 
 import makeUsersDb from '../../../src/data-access/users-db'
 import makeTokensDb from '../../../src/data-access/tokens-db'
@@ -34,7 +35,7 @@ describe('forgot password use case', () => {
     transporter = makeEmailTransporter({ nodemailer })
     emailSender = makeEmailSender({ transporter, log })
     forgotPassword = makeForgotPassword({ usersDb, tokensDb, emailSender, log })
-    createAccount = makeCreateAccount({ usersDb, md5, log })
+    createAccount = makeCreateAccount({ usersDb, passwd, md5, log })
   })
 
   it('should send the forgot password recovery email', async () => {

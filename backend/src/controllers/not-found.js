@@ -1,4 +1,4 @@
-export default async function notFound () {
+const notFound = () => {
   return {
     headers: {
       'Content-Type': 'application/json'
@@ -7,3 +7,4 @@ export default async function notFound () {
     statusCode: 404
   }
 }
+export default notFound

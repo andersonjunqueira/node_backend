@@ -1,8 +1,8 @@
 import makeUser from '../entities/user'
 import BadRequestError from '../errors/BadRequestError'
 
-export default function makeCreateAccount({ usersDb, passwd, md5, log }) {
-  return async function createAccount({ fullName, email, password }) {
+const makeCreateAccount = ({ usersDb, passwd, md5, log }) => {
+  const createAccount = async ({ fullName, email, password }) => {
 
     log.debug({ msg: `Creating Account for ${email}`})
 
@@ -35,4 +35,6 @@ export default function makeCreateAccount({ usersDb, passwd, md5, log }) {
 
     return insertedUser
   }
+  return createAccount
 }
+export default makeCreateAccount

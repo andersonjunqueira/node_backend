@@ -47,7 +47,7 @@ describe('isAuthorized middleware', () => {
       const response = new Response()
       await isAuthorized(request, response, next)
       expect(response.status()).toBe(401)
-      expect(response.error().message).toBe('Authentication header not present.')
+      expect(response.error().message).toBe('Authorization header not present.')
 
     } catch (e) {
       log.test({ msg: e })
@@ -60,7 +60,7 @@ describe('isAuthorized middleware', () => {
       const request = {
         headers: {
           'Content-Type': 'application/json',
-          'Authentication': 'Bearer 123456'
+          'Authorization': 'Bearer 123456'
         },
         path: '/api/users/123456',
         requestURL: `http://localhost:3000/api/users/123456`,
@@ -95,7 +95,7 @@ describe('isAuthorized middleware', () => {
       const request = {
         headers: {
           'Content-Type': 'application/json',
-          'Authentication': `Bearer ${token.accessToken}`
+          'Authorization': `Bearer ${token.accessToken}`
         },
         path: `/api/users/${user.id}`,
         requestURL: `http://localhost:3000/api/users/${user.id}`,
@@ -129,7 +129,7 @@ describe('isAuthorized middleware', () => {
       const request = {
         headers: {
           'Content-Type': 'application/json',
-          'Authentication': `Bearer ${token.accessToken}`
+          'Authorization': `Bearer ${token.accessToken}`
         },
         path: `/api/users/${user.id}`,
         requestURL: `http://localhost:3000/api/users/${user.id}`,
@@ -161,7 +161,7 @@ describe('isAuthorized middleware', () => {
       const request = {
         headers: {
           'Content-Type': 'application/json',
-          'Authentication': `Bearer ${token.accessToken}`
+          'Authorization': `Bearer ${token.accessToken}`
         },
         path: `/api/users/${user.id}`,
         requestURL: `http://localhost:3000/api/users/${user.id}`,

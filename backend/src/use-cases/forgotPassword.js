@@ -1,8 +1,8 @@
 import makeToken from '../entities/token'
 import NotFoundError from '../errors/NotFoundError'
 
-export default function makeForgotPassword({ usersDb, tokensDb, emailSender, log }) {
-  return async function forgotPassword(email) {
+const makeForgotPassword = ({ usersDb, tokensDb, emailSender, log }) => {
+  const forgotPassword = async (email) =>{
 
     // look for user with email
     const userInfo = await usersDb.findByEmail({ email })
@@ -22,6 +22,7 @@ export default function makeForgotPassword({ usersDb, tokensDb, emailSender, log
 
     // send email with url to change password
     await emailSender.sendForgotPassword(userInfo.email, userInfo.fullName, token.getAccessToken())
-
   }
+  return forgotPassword
 }
+export default makeForgotPassword

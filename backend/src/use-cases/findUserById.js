@@ -2,8 +2,8 @@ import makeUser from '../entities/user'
 import NotFoundError from '../errors/NotFoundError'
 import BadRequestError from '../errors/BadRequestError'
 
-export default function makeFindUserById({ usersDb, log }) {
-  return async function findUserById(id) {
+const makeFindUserById = ({ usersDb, log }) => {
+  const findUserById = async (id) => {
 
     if(typeof id === 'undefined' || !id) {
       throw new BadRequestError('User id is mandatory.')
@@ -29,4 +29,6 @@ export default function makeFindUserById({ usersDb, log }) {
       loginRetries: user.getLoginRetries()
     }
   }
+  return findUserById
 }
+export default makeFindUserById

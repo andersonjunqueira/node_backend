@@ -1,32 +1,24 @@
-export default Object.freeze({
-  info,
-  debug,
-  error,
-  test,
-  createLogObject
-})
-
-function info({ type = 'INFO', msg }) {
+const info = ({ type = 'INFO', msg }) => {
   log({ type, msg })
 }
 
-function debug({ type = 'DEBUG', msg }) {
+const debug = ({ type = 'DEBUG', msg }) => {
   log({ type, msg })
 }
 
-function error({ type = 'ERROR', error }) {
+const error = ({ type = 'ERROR', error }) => {
   log({ type, msg: error })
 }
 
-function test(msg, e) {
+const test = (msg, e) => {
   console.log(msg, e || '')
 }
 
-function log({ type, msg }) {
+const log = ({ type, msg }) => {
   // console.log(type, msg);
 }
 
-function createLogObject(e) {
+const createLogObject = (e) => {
   return {
     error: {
       message: e.message,
@@ -34,3 +26,11 @@ function createLogObject(e) {
     }
   }
 }
+
+export default Object.freeze({
+  info,
+  test,
+  debug,
+  error,
+  createLogObject
+})

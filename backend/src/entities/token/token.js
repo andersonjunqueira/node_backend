@@ -1,13 +1,13 @@
 import BadRequestError from '../../errors/BadRequestError'
 
-export default function buildMakeToken ({ Id, jwt }) {
-  return function makeToken ({
+const buildMakeToken = ({ Id, jwt }) => {
+  const makeToken = ({
     id = Id.makeId(),
     accessToken,
     user,
     exp,
     type
-  }) {
+  }) => {
     if (!Id.isValidId(id)) {
       throw new BadRequestError('Token must have an id.')
     }
@@ -29,4 +29,6 @@ export default function buildMakeToken ({ Id, jwt }) {
       getType: () => type || 'LOGIN', 
     })
   }
+  return makeToken
 }
+export default buildMakeToken

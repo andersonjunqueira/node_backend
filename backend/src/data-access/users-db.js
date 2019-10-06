@@ -1,14 +1,6 @@
-export default function makeUsersDb ({ makeDb }) {
+const makeUsersDb = ({ makeDb }) => {
 
-  return Object.freeze({
-    findById,
-    findByEmail,
-    findAll,
-    insert,
-    update
-  })
-
-  async function findById ({ id: _id }) {
+  const findById = async ({ id: _id }) => {
     const db = await makeDb()
     const result = await db.collection('users').find({ _id })
     const found = await result.toArray()
@@ -19,7 +11,7 @@ export default function makeUsersDb ({ makeDb }) {
     return { id, ...info }
   }
 
-  async function findByEmail ({ email }) {
+  const findByEmail = async ({ email }) => {
     const db = await makeDb()
     const result = await db.collection('users').find({ email })
     const found = await result.toArray()
@@ -31,14 +23,14 @@ export default function makeUsersDb ({ makeDb }) {
     return { id, ...info }
   }
 
-  async function findAll() {
+  const findAll = async () => {
     const db = await makeDb()
     const result = await db.collection('users').find({ })
     const found = await result.toArray()
     return found
   }
 
-  async function insert ({ id: _id, ...userInfo }) {
+  const insert = async ({ id: _id, ...userInfo }) => {
     const db = await makeDb()
     const result = await db
       .collection('users')
@@ -47,7 +39,7 @@ export default function makeUsersDb ({ makeDb }) {
     return { id, ...insertedInfo }
   }
 
-  async function update ({ id: _id, ...userInfo }) {
+  const update = async ({ id: _id, ...userInfo }) => {
     const db = await makeDb()
     const result = await db
       .collection('users')
@@ -55,4 +47,12 @@ export default function makeUsersDb ({ makeDb }) {
     return result.modifiedCount > 0 ? { id: _id, ...userInfo } : null
   }
 
+  return Object.freeze({
+    findById,
+    findByEmail,
+    findAll,
+    insert,
+    update
+  })
 }
+export default makeUsersDb

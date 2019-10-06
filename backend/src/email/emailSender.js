@@ -1,4 +1,4 @@
-export default function buildEmailSender({ transporter, log }) {
+const buildEmailSender = ({ transporter, log }) => {
 
   const sendForgotPassword = async (to, name, token) => {
     transporter.sendMail({
@@ -31,3 +31,4 @@ export default function buildEmailSender({ transporter, log }) {
 
   return sender
 }
+export default buildEmailSender

@@ -1,7 +1,7 @@
 import BadRequestError from '../errors/BadRequestError'
 
-export default function makePostLogin({ login, log }) {
-  return async function postLogin(httpRequest) {
+const makePostLogin = ({ login, log }) => {
+  const postLogin = async (httpRequest) => {
     try {
       
       const { email, password } = httpRequest.body
@@ -31,5 +31,7 @@ export default function makePostLogin({ login, log }) {
       }
     }
   }
+  return postLogin
 }
+export default makePostLogin
  

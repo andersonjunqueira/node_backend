@@ -1,10 +1,10 @@
 import BadRequestError from '../errors/BadRequestError'
 
-export default function makePostForgotPassword({ forgotPassword, log }) {
-  return async function postForgotPassword(httpRequest) {
+const makePostForgotPassword = ({ forgotPassword, log }) => {
+  const postForgotPassword = async (httpRequest) => {
     try {
       const { email } = httpRequest.body
-      if(!email) {
+      if (!email) {
         throw new BadRequestError('e-mail is mandatory.')
       }
 
@@ -15,8 +15,8 @@ export default function makePostForgotPassword({ forgotPassword, log }) {
           'Content-Type': 'application/json'
         },
         statusCode: 200,
-        body: { 
-          message: 'A message was sent to the informed e-mail with instructions on how to change the password' 
+        body: {
+          message: 'A message was sent to the informed e-mail with instructions on how to change the password'
         }
       }
 
@@ -32,5 +32,6 @@ export default function makePostForgotPassword({ forgotPassword, log }) {
       }
     }
   }
+  return postForgotPassword
 }
- 
+export default makePostForgotPassword

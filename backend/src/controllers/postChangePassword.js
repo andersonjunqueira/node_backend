@@ -1,11 +1,10 @@
 import BadRequestError from '../errors/BadRequestError'
-import UnauthorizedError from '../errors/UnauthorizedError'
 
-export default function makePostChangePassword({ changePassword, log }) {
-  return async function postChangePassword(httpRequest) {
+const makePostChangePassword = ({ changePassword, log }) => {
+  const postChangePassword = async httpRequest => {
     try {
       const { newpassword } = httpRequest.body
-      if(!newpassword) {
+      if (!newpassword) {
         throw new BadRequestError('New password is mandatory.')
       }
 
@@ -16,8 +15,8 @@ export default function makePostChangePassword({ changePassword, log }) {
           'Content-Type': 'application/json'
         },
         statusCode: 200,
-        body: { 
-          message: 'Your password has been changed successfully' 
+        body: {
+          message: 'Your password has been changed successfully'
         }
       }
 
@@ -33,5 +32,7 @@ export default function makePostChangePassword({ changePassword, log }) {
       }
     }
   }
+  return postChangePassword
 }
- 
+
+export default makePostChangePassword

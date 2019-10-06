@@ -1,12 +1,6 @@
-export default function makeTokensDb({ makeDb }) {
+const makeTokensDb = ({ makeDb }) => {
 
-  return Object.freeze({
-    findByAccessToken,
-    insert,
-    remove
-  })
-
-  async function findByAccessToken(accessToken) {
+  const findByAccessToken = async (accessToken) => {
     const db = await makeDb()
     const result = await db.collection('tokens')
       .find({ accessToken })
@@ -18,7 +12,7 @@ export default function makeTokensDb({ makeDb }) {
     return { id, ...info }
   }
 
-  async function insert({ id: _id, ...tokenInfo }) {
+  const insert = async ({ id: _id, ...tokenInfo }) => {
     const db = await makeDb()
     const result = await db.collection('tokens')
       .insertOne({ _id, ...tokenInfo })
@@ -26,10 +20,16 @@ export default function makeTokensDb({ makeDb }) {
     return { id, ...insertedInfo }
   }
 
-  async function remove({ id: _id }) {
+  const remove = async ({ id: _id }) => {
     const db = await makeDb()
     const result = await db.collection('tokens').deleteOne({ _id })
     return result.deletedCount
   }
 
+  return Object.freeze({
+    findByAccessToken,
+    insert,
+    remove
+  })
 }
+export default makeTokensDb

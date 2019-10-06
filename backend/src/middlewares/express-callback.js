@@ -1,4 +1,4 @@
-module.exports = function makeExpressCallabck (controller) {
+const makeExpressCallabck = (controller) => {
   return (req, res) => {
     const httpRequest = {
       body: req.body,
@@ -7,6 +7,7 @@ module.exports = function makeExpressCallabck (controller) {
       ip: req.ip,
       method: req.method,
       path: req.path,
+      user: req.user,
       requestURL: `${req.protocol}://${req.get('host')}${req.path}`,
       headers: {
         'Content-Type': req.get('Content-Type'),
@@ -25,3 +26,4 @@ module.exports = function makeExpressCallabck (controller) {
       .catch(e => res.status(500).send({ error: 'An unkown error occurred.' }))
   }
 }
+export default makeExpressCallabck

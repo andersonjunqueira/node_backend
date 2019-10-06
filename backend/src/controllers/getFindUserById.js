@@ -1,10 +1,11 @@
-export default function makeGetFindUserById({ findUserById, log }) {
-  return async function getFindUserById(httpRequest) {
+const makeGetFindUserById = ({ findUserById, log }) => {
+  const getFindUserById = async httpRequest => {
     try {
-      
+
       log.debug({ msg: httpRequest })
       const { id } = httpRequest.params
 
+      console.log(findUserById)
       const user = await findUserById(id)
       delete user.password
 
@@ -29,5 +30,7 @@ export default function makeGetFindUserById({ findUserById, log }) {
       }
     }
   }
+  return getFindUserById
 }
- 
+
+export default makeGetFindUserById

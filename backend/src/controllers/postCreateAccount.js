@@ -1,10 +1,10 @@
 import BadRequestError from '../errors/BadRequestError'
 
-export default function makePostCreateAccount({ createAccount, log }) {
-  return async function postCreateAccount(httpRequest) {
+const makePostCreateAccount = ({ createAccount, log }) => {
+  const postCreateAccount = async (httpRequest) => {
     try {
       const { fullName, email, password } = httpRequest.body
-      if(!fullName || !email || !password) {
+      if (!fullName || !email || !password) {
         throw new BadRequestError('Full name, e-mail and password are mandatory.')
       }
 
@@ -35,5 +35,6 @@ export default function makePostCreateAccount({ createAccount, log }) {
       }
     }
   }
+  return postCreateAccount
 }
- 
+export default makePostCreateAccount

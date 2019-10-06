@@ -1,7 +1,7 @@
 import BadRequestError from '../../errors/BadRequestError'
 
-export default function buildMakeUser ({ Id, md5, sanitize, validateEmail, moment }) {
-  return function makeUser ({
+const buildMakeUser = ({ Id, md5, sanitize, validateEmail, moment }) => {
+  const makeUser = ({
     id = Id.makeId(),
     fullName,
     email,
@@ -12,7 +12,7 @@ export default function buildMakeUser ({ Id, md5, sanitize, validateEmail, momen
     blockedOn,
     createdOn,
     modifiedOn = moment().toISOString()
-  }) {
+  }) => {
     if (!Id.isValidId(id)) {
       throw new BadRequestError('User must have an id.')
     }
@@ -25,6 +25,10 @@ export default function buildMakeUser ({ Id, md5, sanitize, validateEmail, momen
     
     let fullNameSanitized = sanitize(fullName)
     let hash
+
+    const makeHash = () => {
+      return md5(email)
+    }
 
     return Object.freeze({
       getId: () => id,
@@ -45,10 +49,7 @@ export default function buildMakeUser ({ Id, md5, sanitize, validateEmail, momen
         blockedOn = undefined
       }
     })
-
-    function makeHash () {
-      return md5(email)
-    }
   }
+  return makeUser
 }
-
+export default buildMakeUser

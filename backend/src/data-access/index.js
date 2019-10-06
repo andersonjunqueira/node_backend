@@ -8,7 +8,7 @@ const url = process.env.MD_DB_URL
 const dbName = process.env.MD_DB_NAME
 const client = new MongoClient(url, { useNewUrlParser: true })
 
-export async function makeDb () {
+export const makeDb = async () => {
   if (!client.isConnected()) {
     await client.connect()
   }

@@ -3,7 +3,7 @@ import faker from 'faker'
 import md5 from '../../src/md5'
 import Id from '../../src/Id'
 
-export default function makeFakeUser(overrides) {
+const makeFakeUser = (overrides) => {
   const user = {
     id: Id.makeId(),
     fullName: faker.name.findName(),
@@ -24,3 +24,4 @@ export default function makeFakeUser(overrides) {
     ...overrides
   }
 }
+export default makeFakeUser

@@ -1,12 +1,12 @@
 import UnauthorizedError from '../errors/UnauthorizedError'
 
-export default function makeIsAuthorized({ checkToken, tokenType, log }) {
-  return async function isAuthorized(req, res, next) {
+const makeIsAuthorized = ({ checkToken, tokenType, log }) => {
+  const isAuthorized = async (req, res, next) => {
 
     try {
-      let authenticationHeader = req.headers['Authentication'] || req.headers['authentication']
+      let authenticationHeader = req.headers['Authorization'] || req.headers['authorization']
       if(!authenticationHeader) {
-        throw new UnauthorizedError('Authentication header not present.')
+        throw new UnauthorizedError('Authorization header not present.')
       }
       authenticationHeader = authenticationHeader.replace('Bearer ', '')
       const userInfo = await checkToken(authenticationHeader, tokenType)
@@ -18,4 +18,6 @@ export default function makeIsAuthorized({ checkToken, tokenType, log }) {
         .send({ ...log.createLogObject(e) })
     }
   }
+  return isAuthorized
 }
+export default makeIsAuthorized

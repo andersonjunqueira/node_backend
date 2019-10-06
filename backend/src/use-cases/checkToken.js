@@ -1,7 +1,7 @@
 import UnauthorizedError from '../errors/UnauthorizedError'
 
-export default function makeCheckToken({ usersDb, tokensDb, jwt, moment, log }) {
-  return async function checkToken(accessToken, requiredType) {
+const makeCheckToken = ({ usersDb, tokensDb, jwt, moment, log }) => {
+  const checkToken = async (accessToken, requiredType) => {
 
     if(!accessToken) {
       throw new UnauthorizedError('Invalid token.')
@@ -41,4 +41,6 @@ export default function makeCheckToken({ usersDb, tokensDb, jwt, moment, log }) 
     return user
 
   }
+  return checkToken
 }
+export default makeCheckToken
